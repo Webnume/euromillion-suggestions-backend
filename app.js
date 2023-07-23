@@ -18,13 +18,13 @@ const corsOptions = {
   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 };
 app.use(cors(corsOptions));
-app.get("/", cors(corsOptions), async (req, res) => {
+app.get("/", async (req, res) => {
   const getEuromillionLister = await getEuromillionList();
   res.status(200).json(getEuromillionLister);
 });
 
-app.get("/ScrapedDataSave.json", cors(corsOptions), (req, res) => {
-  res.sendFile(path.join(__dirname, "ScrapedDataSave.json"));
+app.get("/ScrapedDataSave.json", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, "ScrapedDataSave.json"));
 });
 
 module.exports = app;
