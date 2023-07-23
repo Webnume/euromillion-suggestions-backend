@@ -71,7 +71,7 @@ const getEuromillionList = async () => {
   // stringify JSON Object
   var jsonContent = JSON.stringify(allScrapedData);
 
-  cron.schedule("* * * * *", () => {
+  cron.schedule("* * * * 0", () => {
     // console.log('running a task every minute');
     fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
       if (err) {
