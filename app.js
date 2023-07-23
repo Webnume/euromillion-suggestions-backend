@@ -1,9 +1,9 @@
 const express = require("express");
+const app = express();
 const getEuromillionList = require("./euroMillionList");
 const cors = require("cors");
 const path = require("path");
 
-const app = express();
 const allowedOrigins = ["https://curious-palmier-d08c6b.netlify.app/"];
 
 const corsOptions = {
@@ -22,7 +22,7 @@ app.get("/", cors(corsOptions), async (req, res) => {
   res.status(200).json(getEuromillionLister);
 });
 
-app.get("/ScrapedDataSave.json", (req, res) => {
+app.get("/ScrapedDataSave.json", cors(corsOptions), (req, res) => {
   res.sendFile(path.join(__dirname, "ScrapedDataSave.json"));
 });
 
