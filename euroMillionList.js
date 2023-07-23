@@ -1,6 +1,8 @@
 //Scrapper of Euromillion stats page
 const fetch = require("isomorphic-fetch");
 const cheerio = require("cheerio");
+const fs = require("fs");
+const cron = require("node-cron");
 
 // start of the program
 const getEuromillionList = async () => {
@@ -65,6 +67,21 @@ const getEuromillionList = async () => {
     scrapedDataStars.push(tableRowStars);
   });
   const allScrapedData = [scrapedDataNumbers, scrapedDataStars];
+
+  // stringify JSON Object
+  var jsonContent = JSON.stringify(allScrapedData);
+
+  cron.schedule("* * * * *", () => {
+    // console.log('running a task every minute');
+    fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
+      if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+      }
+
+      console.log("JSON file has been saved.");
+    });
+  });
 
   return allScrapedData;
 };
