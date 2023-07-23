@@ -15,6 +15,7 @@ const corsOptions = {
     }
   },
   optionsSuccessStatus: 200,
+  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 };
 app.use(cors(corsOptions));
 app.get("/", cors(corsOptions), async (req, res) => {
