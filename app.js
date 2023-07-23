@@ -7,10 +7,7 @@ const path = require('path');
 
 const app = express();
 const allowedOrigins = [
-  'https://www.yoursite.com',
-  'http://127.0.0.1:5500',
-  'http://localhost:3003',
-  'http://localhost:3000'
+  'https://curious-palmier-d08c6b.netlify.app/'
 ];
 
 const corsOptions = {
