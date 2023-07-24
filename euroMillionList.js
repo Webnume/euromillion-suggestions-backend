@@ -84,7 +84,7 @@ const getEuromillionList = async () => {
     });
   });
 
-  return allScrapedData;
+  // return allScrapedData;
 };
 
 // invoking the main function
