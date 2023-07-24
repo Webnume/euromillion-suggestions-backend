@@ -2,7 +2,6 @@
 const fetch = require("isomorphic-fetch");
 const cheerio = require("cheerio");
 const fs = require("fs");
-const cron = require("node-cron");
 
 // start of the program
 const getEuromillionList = async () => {
@@ -72,16 +71,13 @@ const getEuromillionList = async () => {
   var jsonContent = JSON.stringify(allScrapedData);
 
   // write data to a Json file every sunday at 9am
-  cron.schedule("0 0 9 * 0", () => {
-    // console.log('running a task every minute');
-    fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
-      if (err) {
-        console.log("An error occured while writing JSON Object to File.");
-        return console.log(err);
-      }
+  fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
+    if (err) {
+      console.log("An error occured while writing JSON Object to File.");
+      return console.log(err);
+    }
 
-      console.log("JSON file has been saved.");
-    });
+    console.log("JSON file has been saved.");
   });
 
   // return allScrapedData;
