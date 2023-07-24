@@ -18,10 +18,10 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-app.get("/", async (req, res) => {
-  const getEuromillionLister = await getEuromillionList();
-  res.status(200).json(getEuromillionLister);
-});
+// app.get("/", async (req, res) => {
+//   const getEuromillionLister = await getEuromillionList();
+//   res.status(200).json(getEuromillionLister);
+// });
 
 app.get("/ScrapedDataSave.json", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, "ScrapedDataSave.json"));
