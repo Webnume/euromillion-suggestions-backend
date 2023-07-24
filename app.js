@@ -23,8 +23,9 @@ app.use(cors(corsOptions));
 //   res.status(200).json(getEuromillionLister);
 // });
 
-app.get("/ScrapedDataSave.json", (req, res) => {
+app.get("/ScrapedDataSave.json", async (req, res) => {
   res.status(200).sendFile(path.join(__dirname, "ScrapedDataSave.json"));
+  getEuromillionList();
 });
 
 module.exports = app;

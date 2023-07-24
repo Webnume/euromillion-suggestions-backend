@@ -88,5 +88,5 @@ const getEuromillionList = async () => {
 };
 
 // invoking the main function
-getEuromillionList();
+// getEuromillionList();
 module.exports = getEuromillionList;
