@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 //   const getEuromillionLister = await getEuromillionList();
 //   res.status(200).json(getEuromillionLister);
 // });
-app.get("/ScrapedDataSave.json", async (req, res) => {
+app.get("/ScrapedDataSave", async (req, res) => {
   res.status(200).sendFile(path.join(__dirname, "ScrapedDataSave.json"));
 });
 
