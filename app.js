@@ -24,7 +24,7 @@ app.use(cors(corsOptions));
 //   res.status(200).json(getEuromillionLister);
 // });
 app.get("/ScrapedDataSave", async (req, res) => {
-  res.status(200).send( "ScrapedDataSave.json");
+  res.status(200).sendFile(path.join(__dirname, "ScrapedDataSave.json"));
 });
 
 // write data to a Json file every sunday at 9am
