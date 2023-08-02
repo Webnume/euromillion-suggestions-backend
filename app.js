@@ -3,7 +3,7 @@ const app = express();
 const getEuromillionList = require("./euroMillionList");
 const cors = require("cors");
 const path = require("path");
-const cron = require("node-cron");
+// const cron = require("node-cron");
 
 // const allowedOrigins = ["https://curious-palmier-d08c6b.netlify.app/"];
 
@@ -28,9 +28,9 @@ app.get("/ScrapedDataSave", async (req, res) => {
 });
 
 // write data to a Json file every sunday at 9am
-cron.schedule("0 0 9 * 0", () => {
+// cron.schedule("0 0 9 * 0", () => {
   // console.log('running a task every minute');
   getEuromillionList();
-});
+// });
 
 module.exports = app;
