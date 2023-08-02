@@ -49,7 +49,7 @@ const getEuromillionList = async () => {
   //parsedEuromillion Stars Data
   parsedEuromillionData(
     "#page-chart > section.bk-palmares.bk-expand.bk-expand-0ee5d473-1ec6-4254-b5d0-f1477fedfe83.euromillion > div > div > div.tab-content_wrapper > div:nth-child(2) > table > tbody > tr"
-  ).each((index, element) => {
+  ).each((_index, element) => {
     const tdsStars = parsedEuromillionData(element).find("td");
     const numeroStars = parsedEuromillionData(tdsStars[0]).text();
     const nombreDeSortiesStars = parsedEuromillionData(tdsStars[1]).text();
@@ -68,19 +68,19 @@ const getEuromillionList = async () => {
   const allScrapedData = [scrapedDataNumbers, scrapedDataStars];
 
   // stringify JSON Object
-  var jsonContent = JSON.stringify(allScrapedData);
+  // var jsonContent = JSON.stringify(allScrapedData);
 
   // write data to a Json file every sunday at 9am
-  fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
-    if (err) {
-      console.log("An error occured while writing JSON Object to File.");
-      return console.log(err);
-    }
+  // fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
+  //   if (err) {
+  //     console.log("An error occured while writing JSON Object to File.");
+  //     return console.log(err);
+  //   }
 
-    console.log("JSON file has been saved.");
-  });
+  //   console.log("JSON file has been saved.");
+  // });
 
-  // return allScrapedData;
+  return allScrapedData;
 };
 
 // invoking the main function
