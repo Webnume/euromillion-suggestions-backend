@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const getEuromillionList = require("./euroMillionList");
+const getEuromillionList = require("./euroMillionList_OLD");
 const cors = require("cors");
 const path = require("path");
 const cron = require("node-cron");

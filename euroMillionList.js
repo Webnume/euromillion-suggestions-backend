@@ -1,88 +1,55 @@
-//Scrapper of Euromillion stats page
-const fetch = require("isomorphic-fetch");
-const cheerio = require("cheerio");
-const fs = require("fs");
+const puppeteer = require("puppeteer");
 
-// start of the program
 const getEuromillionList = async () => {
-  // function to get the raw data
-  const getRawData = (URL) => {
-    return fetch(URL)
-      .then((response) => response.text())
-      .then((data) => {
-        return data;
-      });
+  // Launch the browser and open a new blank page
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage(); // extracting the table data
+
+  // Navigate the page to a URL
+  await page.goto(
+    "https://www.fdj.fr/jeux-de-tirage/euromillions-my-million/statistiques"
+  );
+
+  // Set screen size
+  await page.setViewport({ width: 1080, height: 1024 });
+
+  // Function to clean the data
+  const cleanData = (data) => {
+    if (!Array.isArray(data)) {
+      throw new TypeError("Expected an array");
+    }
+    return data.map((item) => item.replace(/\n\t\n/g, ", "));
   };
 
-  // URL for data
-  const URL =
-    "https://www.fdj.fr/jeux-de-tirage/euromillions-my-million/statistiques";
-  const euromillionRawData = await getRawData(URL);
+  // numero, nombreDeSorties, %deSorties, dateDeSorties
+  const scrapedData = async () =>
+    await page.evaluate(() => {
+      const tds = Array.from(
+        document.querySelectorAll("#slot1-slice-palmares-1 tbody tr")
+      );
+      return tds.map((td) => td.innerText);
+    });
 
-  // parsing the data
-  const parsedEuromillionData = cheerio.load(euromillionRawData);
+  // Get the numbers data and clean it
+  const scrapedRawDataNumbers = await scrapedData();
+  const dataNumbers = cleanData(scrapedRawDataNumbers);
 
-  // extracting the table data
-  const scrapedDataNumbers = [];
-  const scrapedDataStars = [];
+  // Click on the button to get the stars data
+  await page.locator("button ::-p-text(Palmarès étoiles)").click();
 
-  //parsedEuromillion Numbers Data
-  parsedEuromillionData(
-    "#page-chart > section.bk-palmares.bk-expand.bk-expand-0ee5d473-1ec6-4254-b5d0-f1477fedfe83.euromillion > div > div > div.tab-content_wrapper > div.tab-content.is-active > table > tbody > tr "
-  ).each((index, element) => {
-    const tds = parsedEuromillionData(element).find("td");
-    const numero = parsedEuromillionData(tds[0]).text();
-    const nombreDeSorties = parsedEuromillionData(tds[1]).text();
-    const pourcentageDeSorties = parsedEuromillionData(tds[2]).text();
-    const dateDeSorties = parsedEuromillionData(tds[3]).text();
+  // Get the stars data and clean it
+  const scrapedRawDataStars = await scrapedData();
+  const dataStars = cleanData(scrapedRawDataStars);
 
-    const tableRow = {
-      numero,
-      nombreDeSorties,
-      pourcentageDeSorties,
-      dateDeSorties,
-    };
+  await browser.close();
 
-    scrapedDataNumbers.push(tableRow);
-  });
+  
 
-  //parsedEuromillion Stars Data
-  parsedEuromillionData(
-    "#page-chart > section.bk-palmares.bk-expand.bk-expand-0ee5d473-1ec6-4254-b5d0-f1477fedfe83.euromillion > div > div > div.tab-content_wrapper > div:nth-child(2) > table > tbody > tr"
-  ).each((_index, element) => {
-    const tdsStars = parsedEuromillionData(element).find("td");
-    const numeroStars = parsedEuromillionData(tdsStars[0]).text();
-    const nombreDeSortiesStars = parsedEuromillionData(tdsStars[1]).text();
-    const pourcentageDeSortiesStars = parsedEuromillionData(tdsStars[2]).text();
-    const dateDeSortiesStars = parsedEuromillionData(tdsStars[3]).text();
+  const allScrapedData = [dataNumbers, dataStars];
 
-    const tableRowStars = {
-      numeroStars,
-      nombreDeSortiesStars,
-      pourcentageDeSortiesStars,
-      dateDeSortiesStars,
-    };
-
-    scrapedDataStars.push(tableRowStars);
-  });
-  const allScrapedData = [scrapedDataNumbers, scrapedDataStars];
-
-  // stringify JSON Object
-  // var jsonContent = JSON.stringify(allScrapedData);
-
-  // write data to a Json file every sunday at 9am
-  // fs.writeFile("ScrapedDataSave.json", jsonContent, "utf8", function (err) {
-  //   if (err) {
-  //     console.log("An error occured while writing JSON Object to File.");
-  //     return console.log(err);
-  //   }
-
-  //   console.log("JSON file has been saved.");
-  // });
+  console.log(allScrapedData);
 
   return allScrapedData;
 };
-
-// invoking the main function
-// getEuromillionList();
+// getEuromillionList()
 module.exports = getEuromillionList;
