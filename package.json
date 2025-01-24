@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "testEuroMillionList": "node euroMillionList.js",
-    "start:dev": "nodemon server"
+    "start:dev": "nodemon server",
+    "postinstall": "npx puppeteer browsers install"
   },
   "author": "",
   "license": "ISC",
